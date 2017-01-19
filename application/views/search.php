@@ -8,13 +8,23 @@
         <p>Please enter Guest Information below to begin Search.</p>
         <div class="row">
         	<div class="col-md-8">
-        		<form role="form" action="<?php echo site_url();?>/users/searchguestinfo" method="post">
+        		<form role="form" action="<?php echo site_url();?>/users/searchguestinfo" id=="frm-guestsearch" method="post">
         		<input type="search"  name="search-info" class="form-control input-default" placeholder="Enter Guest Name or NIC or Phone Number or Company name" required autofocus />
 
         	</div>
-	      	<div class="col-md-4">
-				    <button type="submit" class="btn btn-primary btn-default btn-block">Search</button>
-			     </div>
+           <?php if($this->session->userdata('role')=='0'){ ?>
+            <div class="col-md-2">
+                  <button type="submit" class="btn btn-primary btn-default btn-block">Search</button>
+              </div>
+              <div class="col-md-2">
+                  <button type="submit" class="btn btn-warning btn-default btn-block"  formnovalidate >View All guests</button>
+              </div>
+          <?php  }else{ ?>
+              <div class="col-md-4">
+                  <button type="submit" class="btn btn-primary btn-default btn-block">Search</button>
+              </div>
+              <?php } ?>
+	      	
 	      	</form>
       	</div>
      
