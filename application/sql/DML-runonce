@@ -1,0 +1,6 @@
+UPDATE `company_accounts` SET `company_balance` = `company_credit` - `company_debit`
+
+
+#controller Function
+accountsmg/
+
