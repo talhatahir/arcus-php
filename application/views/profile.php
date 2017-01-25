@@ -13,6 +13,33 @@
     var today = yyyy+'-'+mm+'-'+dd;
     $("#curr").val(today);
 
+
+
+        var from = $('#from').datepicker({
+      multidateSeparator: "-",
+      onRender: function(date) {
+        return date.valueOf() < now.valueOf() ? 'disabled' : '';
+      }
+      
+    }).on('changeDate', function(ev) {
+      if (ev.date.valueOf() > to.date.valueOf()) {
+        var newDate = new Date(ev.date)
+        newDate.setDate(newDate.getDate() + 1);
+        to.setValue(newDate);
+      }
+      from.hide();
+      $('#to')[0].focus();
+    }).data('datepicker');
+    var to = $('#to').datepicker({
+      multidateSeparator: "-",
+      onRender: function(date) {
+        return date.valueOf() <= from.date.valueOf() ? 'disabled' : '';
+      }
+      
+    }).on('changeDate', function(ev) {
+      to.hide();
+    }).data('datepicker');
+
   });
 
  </script>
@@ -122,6 +149,9 @@ $guest_room_time= $guest_room_time[0];
           <div class="col-xs-2">
             <button type="button" id="guestinfo-button" class="btn btn-success btn-block">Update Guest Info</button>
           </div>
+          <div class="col-xs-2">
+            <button type="button" id="guestinvoice-button" class="btn btn-danger btn-block">Create Invoice</button>
+          </div>
 		     </div>
 
 		 	<br/>
@@ -164,6 +194,153 @@ $guest_room_time= $guest_room_time[0];
             </div>
           </div>
         </div>
+
+
+
+
+      <div class="modal fade bs-example-modal-lg" id="guestinvoice-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog" style="width: 600px; height: 460px; overflow: scroll; background-color:white;">
+            <div class="modal-content" style="top:-55px;">
+                 <div class="container col-xs-12">
+                     
+                      
+                        <h3>Select Date Range</h3>
+                        <br/>                        
+                          <div class="row">                            
+                            <div class="col-xs-6">
+                              <label for="dept">From</label>
+                              <input id="from" name="from" type="text" placeholder="From date" data-date-format="yyyy/mm/dd" class="form-control cls-date" required> 
+                            </div>
+                            <div class="col-xs-6">
+                              <label for="dept">To</label>
+                              <input id="to" name="to" type="text" placeholder="To date" data-date-format="yyyy/mm/dd" class="form-control cls-date" required> 
+                            </div>                            
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-6">
+                              <button  id="guestInvoice-create" class="btn btn-primary btn-block">Create</button>
+                            </div>
+                          </div>     
+                          <hr/>
+                      
+
+
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="invoice-title">
+          <h2 class="pull-left">Invoice</h2><h3 class="pull-right" id="inv-id">#</h3>
+        </div>
+        <br/>
+          <br/>
+            <br/>
+             <div class="row">
+             &nbsp;
+             </div>
+      
+        <div class="row">
+          <div class="col-xs-6">
+            <address>
+            <strong id="inv-hotelname">Hotel Name</strong><br>
+              John Smith<br>
+              1234 Main<br>
+              Apt. 4B<br>
+              Springfield, ST 54321
+            </address>
+          </div>
+          <div class="col-xs-6 text-right">
+            <address>
+              <strong id="inv-guestname">Guest:</strong><br>
+              Jane Smith<br>
+              1234 Main<br>
+              Apt. 4B<br>
+              Springfield, ST 54321
+            </address>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <address>
+              <strong>Payment Method:</strong><br>
+              CASH
+            </address>
+          </div>
+          <div class="col-xs-6 text-right">
+            <address>
+              <strong>Dated:</strong><br>
+              <span id="inv-dated">1/11/2017-1/12/2017</span><br><br>
+            </address>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Summary</strong></h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed">
+                <thead>
+                                <tr>
+                      <td><strong>Item</strong></td>
+                      <td class="text-center"><strong>Price</strong></td>                      
+                      <td class="text-right"><strong>Totals</strong></td>
+                                </tr>
+                </thead>
+                <tbody>
+                  <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                  <tr>
+                    <td>BS-200</td>
+                    <td class="text-center">$10.99</td>
+                    <td class="text-right">$10.99</td>
+                  </tr>
+                               
+                                <tr>
+                        <td>BS-1000</td>
+                    <td class="text-center">$600.00</td>                    
+                    <td class="text-right">$600.00</td>
+                  </tr>
+                  <tr>
+                    <td class="thick-line"></td>
+                    <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                    <td class="thick-line text-right">$670.99</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>                    
+                    <td class="no-line text-center"><strong>TAX-16%</strong></td>
+                    <td class="no-line text-right">$15</td>
+                  </tr>
+                  <tr>
+                    <td class="no-line"></td>                    
+                    <td class="no-line text-center"><strong>Total</strong></td>
+                    <td class="no-line text-right">$685.99</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">       
+       <div class="col-xs-6">
+      <p  class="pull-left" style="font-size:8px;">A Product of <a href="http://www.artefaktsolutions.com/"><img height="20" alt="Arcus" src="http://localhost/hhh-artefakt//assets/images/arbw.png"></a></p>
+       </div>
+       <div class="col-xs-6 ">
+       <p class="pull-right">Date: 1//1/2017</p>
+       </div>
+    </div>
+                
+                    
+                    </div> <!-- /container -->
+            </div>
+          </div>
+        </div>
+
 
 
         <div class="modal fade bs-example-modal-lg" id="updateguestinfo-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

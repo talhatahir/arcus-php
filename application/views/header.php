@@ -34,6 +34,11 @@
 
         $(document).ready(function(){
 
+
+          $('.cls-date').datepicker();
+
+   
+
           $("#expense-button").click(function(){
            $("#expense-button").fadeOut();
            $("#add-expense").fadeIn();
@@ -53,7 +58,13 @@
             });    
           });
 
+          $("#guestinvoice-button").click(function(){
+            $("#guestinvoice-modal").modal({
+              keyboard: false
+            });    
+          });
 
+          
           $('#room-modal').on('hidden.bs.modal', function () {
             location.reload();
           });
@@ -61,7 +72,6 @@
           $('#updateguestinfo-modal').on('hidden.bs.modal', function () {
             location.reload();
           });
-
 
 
           $("#cheque-button").click(function(){
@@ -115,7 +125,36 @@
             //$('.bs-unpaid-modal-sm').modal('hide');            
           });
 
-          
+
+         $("#guestInvoice-create").click(function(event){
+              event.preventDefault();
+
+              if ($("#to").val()=="") {
+                alert("Please Enter To Date");
+                return;
+              }else if ($("#from").val()=="") {
+                alert("Please Enter From Date"); 
+                 return;
+              }
+
+
+
+            $.ajax({
+                  url:"<?php echo site_url();?>"+"/users/guestinvoicebyDate",
+                  type: 'POST', 
+                  dataType : 'json',
+                  data:{currDate:$("#curr").val(),guestId:$("#up-guest-id").val(),toDate: $("#to").val().replace("/","-").replace("/","-"), fromDate: $("#from").val().replace("/","-").replace("/","-")},                
+                  success: function(data) {
+                  //called when successful
+                 // $('#ajaxphp-results').html(data);
+                 $("#inv-id").text(data.inv_id);                 
+                  },
+                  error: function(e) {
+                  //called when there is an error
+                  //console.log(e.message);
+                  }
+                });
+          });
 
 
 
@@ -123,6 +162,10 @@
 
 
 </script>
+
+<style type="text/css">  
+  .datepicker{z-index:9999 !important}
+</style>
 
 </head>
 

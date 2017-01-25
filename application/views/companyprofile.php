@@ -57,7 +57,7 @@
          	<div class="col-xs-2">
 				   <button type="button" id="expense-button" class="btn btn-warning btn-block">Add Expense</button>
 			    </div>
-          <div class="col-xs-3" style="float:right;">
+          <div class="col-xs-2" style="float:right;">
            <button type="button" id="cheque-button" class="btn btn-danger btn-block">View Cheque Book</button>
           </div>
 		 </div>

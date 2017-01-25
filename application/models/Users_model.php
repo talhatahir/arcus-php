@@ -831,6 +831,113 @@ public function addguest_accountinfo(){
 
 }
 
+
+public function getGuestInvoicebyDate(){
+        // grab user input
+
+    
+    $toDate = $this->security->xss_clean($this->input->post('toDate'));
+    $fromDate = $this->security->xss_clean($this->input->post('fromDate'));    
+    $guestId = $this->security->xss_clean($this->input->post('guestId')); 
+    $currDate = $this->security->xss_clean($this->input->post('currDate')); 
+       
+    $inv_id=0;
+    $payment_method="CASH";
+
+    $this->db->order_by("invoice_id", "desc"); 
+
+        // Run the query
+    $query = $this->db->get('guest_invoices');
+
+        // Let's check if there are any results
+    if($query->num_rows > 0)
+    {
+        $ret = $query->row();
+        $inv_id= $ret->invoice_id; 
+        $payment_method=$ret->payment_method; 
+    }
+
+    $company_name="HHH GuestHouse";
+    $company_address="ABC,XYZ Springfield, ST 54321 Romania";
+
+    $inv_id=$inv_id+1;
+
+    $data = array(
+         'inv_id' => $inv_id ,
+         'company_name' => $company_name ,
+         'company_address' => $company_address ,
+         'payment_method' => $payment_method ,
+         'toDate' => $toDate,
+         'fromDate'=>$fromDate,
+         'currDate'=>$currDate
+         );
+
+    
+    
+    echo  json_encode($data);
+
+
+
+
+//$this->db->insert_id();
+
+    //return $fromDate;
+        //get latest balance
+    // $this->db->order_by("account_index", "desc"); 
+    // $this->db->limit(1);        
+    //     // Run the query
+    // $query = $this->db->get('guest_invoices');
+
+    //     // Let's check if there are any results
+    // if($query->num_rows > 0)
+    // {
+    //     $r=$query->result_array();
+    //     $balance=$r[0]['company_balance'];
+    // }else{
+
+    //     $balance=0.00;
+    // }
+
+    // $balance=$balance+0.00;
+
+    // if ($amount_type=="Credit") {
+    //     $creditamount=$price;
+    //     $debitamount=0.00;
+    //     $balance=$balance+$creditamount;
+
+    // }else{
+    //     $creditamount=0.00;
+    //     $debitamount=$price;
+    //     $balance=$balance-$debitamount;
+    // }
+
+
+    // $data = array(
+    //     'company_id' => $company_id ,
+    //     'company_credit' => $creditamount ,
+    //     'company_debit' => $debitamount ,
+    //     'company_date' => $currDate ,
+    //     'company_remarks' => $remarks,
+    //     'company_balance'=>$balance         
+    //     );
+
+
+    // $this->db->trans_start();
+
+    // $this->db->insert('company_accounts', $data); 
+
+    // $this->db->trans_complete(); 
+
+    // if ($this->db->trans_status() === TRUE)
+    // {
+    //     return true;
+    // }
+
+    // return false;
+
+}
+
+
 public function verify_macid($mac){
 
 

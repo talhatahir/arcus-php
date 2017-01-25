@@ -725,6 +725,40 @@ class Users extends CI_Controller {
 
     }
 
+    
+    public function guestinvoicebyDate()
+    {
+
+      if(! $this->session->userdata('validated')){
+            redirect('users/login');
+        }
+
+        try{
+
+           
+            if($_POST){
+
+                $this->load->model("Users_model");
+                $result= $this->Users_model->getGuestInvoicebyDate();
+                //$data['search_results']=$result;
+                echo $result;
+                //$this->search($result);         
+            }else{
+
+                redirect('users/login');
+            }          
+
+                           
+        }
+
+        catch (Exception $e) {
+        //alert the user then kill the process
+            var_dump($e->getMessage());
+        }        
+       
+
+    }
+
 /*
 move this logic to a new project
 	public function admin_mainpage()
