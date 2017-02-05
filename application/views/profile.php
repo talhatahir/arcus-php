@@ -152,6 +152,7 @@ $guest_room_time= $guest_room_time[0];
           <div class="col-xs-2">
             <button type="button" id="guestinvoice-button" class="btn btn-danger btn-block">Create Invoice</button>
           </div>
+          
 		     </div>
 
 		 	<br/>
@@ -221,11 +222,22 @@ $guest_room_time= $guest_room_time[0];
                             <div class="col-md-6">
                               <button  id="guestInvoice-create" class="btn btn-primary btn-block">Create</button>
                             </div>
+                            <div class="col-md-6">
+                              <button type="button" style="display:none;" id="guestinvoice-print" class="btn btn-warning btn-block">Print</button>
+                            </div>
                           </div>     
                           <hr/>
-                      
+               
+                     <div style="display:none;">
+                        <input type="hidden" name="form-dateCreated" value=""  id="form-dateCreated" />                       
+                        <input type="hidden" name="form-paymentMethod" value="CASH"  id="form-paymentMethod" />
+                        <input type="hidden" value="<?php echo $_GET['guest_id']; ?>" name="form-guestid"  id="form-guestid" />
+                        <input type="hidden" name="form-invText" value=""  id="form-invText" />                       
+                    </div>
+                       
+                     
 
-
+<div id="print-data">
     <div class="row">
         <div class="col-xs-12">
           <div class="invoice-title">
@@ -242,19 +254,19 @@ $guest_room_time= $guest_room_time[0];
           <div class="col-xs-6">
             <address>
             <strong id="inv-hotelname">Hotel Name</strong><br>
-              John Smith<br>
+              <p id="inv-hoteladdress">John Smith<br>
               1234 Main<br>
               Apt. 4B<br>
-              Springfield, ST 54321
+              Springfield, ST 54321</p>
             </address>
           </div>
           <div class="col-xs-6 text-right">
             <address>
               <strong id="inv-guestname">Guest:</strong><br>
-              Jane Smith<br>
+              <p id="inv-guestaddress">Jane Smith<br>
               1234 Main<br>
               Apt. 4B<br>
-              Springfield, ST 54321
+              Springfield, ST 54321</p>
             </address>
           </div>
         </div>
@@ -283,13 +295,13 @@ $guest_room_time= $guest_room_time[0];
           </div>
           <div class="panel-body">
             <div class="table-responsive">
-              <table class="table table-condensed">
+              <table class="table table-condensed" id="inv-accData">
                 <thead>
-                                <tr>
+                    <tr>
                       <td><strong>Item</strong></td>
                       <td class="text-center"><strong>Price</strong></td>                      
                       <td class="text-right"><strong>Totals</strong></td>
-                                </tr>
+                    </tr>
                 </thead>
                 <tbody>
                   <!-- foreach ($order->lineItems as $line) or some such thing here -->
@@ -298,8 +310,7 @@ $guest_room_time= $guest_room_time[0];
                     <td class="text-center">$10.99</td>
                     <td class="text-right">$10.99</td>
                   </tr>
-                               
-                                <tr>
+                  <tr>
                         <td>BS-1000</td>
                     <td class="text-center">$600.00</td>                    
                     <td class="text-right">$600.00</td>
@@ -331,9 +342,10 @@ $guest_room_time= $guest_room_time[0];
       <p  class="pull-left" style="font-size:8px;">A Product of <a href="http://www.artefaktsolutions.com/"><img height="20" alt="Arcus" src="http://localhost/hhh-artefakt//assets/images/arbw.png"></a></p>
        </div>
        <div class="col-xs-6 ">
-       <p class="pull-right">Date: 1//1/2017</p>
+       <p class="pull-right">Date: <span id="inv-currentDate">1//1/2017</span></p>
        </div>
     </div>
+  </div>
                 
                     
                     </div> <!-- /container -->

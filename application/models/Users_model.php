@@ -341,6 +341,28 @@ public function guest_get_accountinfo($id){
     return $no_result;
 }
 
+public function guest_get_accountinfoWithDate($id,$toDate,$fromDate){
+        // grab user input
+
+    $this->db->where('guest_id', $id);
+    $this->db->where('guest_date >=', $fromDate);
+    $this->db->where('guest_date <=', $toDate);
+    $this->db->order_by("guest_date", "asc"); 
+
+        // Run the query
+    $query = $this->db->get('guests_accounts');
+
+        // Let's check if there are any results
+    if($query->num_rows > 0)
+    {
+        return $query->result_array();
+    }
+
+        //If the output query has no result then send a string to show that no data is found.
+    $no_result='no_result';
+    return $no_result;
+}
+
 public function company_get_accountinfo_test($id){
         // grab user input
 
@@ -843,6 +865,10 @@ public function getGuestInvoicebyDate(){
        
     $inv_id=0;
     $payment_method="CASH";
+    $guestAccArray="";
+    $guestInfo="";
+    $guest_name="";
+    $guest_address="";
 
     $this->db->order_by("invoice_id", "desc"); 
 
@@ -857,10 +883,26 @@ public function getGuestInvoicebyDate(){
         $payment_method=$ret->payment_method; 
     }
 
+    $guestAccArray= $this->guest_get_accountinfoWithDate($guestId,$toDate,$fromDate);
+    $guestInfo= $this->viewguest($guestId);
+    
+    if ($guestInfo=="no_result") {
+        $guestInfo="";
+    }else{
+
+        $guest_name=$guestInfo[0]['guest_name'];
+        $guest_address=$guestInfo[0]['guest_address'];
+    }
+    
+    if ($guestAccArray=="no_result") {
+        $guestAccArray="";
+    }
+
     $company_name="HHH GuestHouse";
     $company_address="ABC,XYZ Springfield, ST 54321 Romania";
-
     $inv_id=$inv_id+1;
+    $company_address=str_replace(',', '<br />', $company_address);
+    $guest_address=str_replace(',', '<br />', $guest_address);
 
     $data = array(
          'inv_id' => $inv_id ,
@@ -869,7 +911,10 @@ public function getGuestInvoicebyDate(){
          'payment_method' => $payment_method ,
          'toDate' => $toDate,
          'fromDate'=>$fromDate,
-         'currDate'=>$currDate
+         'currDate'=>$currDate,
+         'guest_accounts'=>$guestAccArray,
+         'guest_name'=>$guest_name,
+         'guest_address'=>$guest_address
          );
 
     
@@ -935,6 +980,44 @@ public function getGuestInvoicebyDate(){
 
     // return false;
 
+}
+
+public function saveGuestInvoice(){
+
+        $this->load->helper('date');
+        // grab user input
+        $dateCreated = $this->security->xss_clean($this->input->post('formdateCreated'));
+        $invoiceText = $this->security->xss_clean($this->input->post('forminvText'));
+        $paymentMethod = $this->security->xss_clean($this->input->post('formpaymentMethod'));
+        $guestId = $this->security->xss_clean($this->input->post('formguestid'));        
+        $time=time();        
+
+        $data = array(
+            'guest_id' => $guestId ,
+            'date_created' => $dateCreated ,
+            'invoice_text' => $invoiceText ,
+            'payment_method' => $paymentMethod ,
+            'invoice_timestamp' => $time
+            );
+
+
+
+        
+        $this->db->trans_start();
+        $this->db->insert('guest_invoices', $data); 
+        $table1_id = $this->db->insert_id();
+
+        
+        $this->db->trans_complete(); 
+
+        if ($this->db->trans_status() === TRUE)
+        {
+            //return true;
+            echo date('m/d/Y H:i:s', $time);
+        }
+        
+        
+        return false;
 }
 
 

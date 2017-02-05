@@ -143,6 +143,35 @@ class Users extends CI_Controller {
 
     }
 
+    public function insertGuestInvoice(){
+
+        if($_POST){
+
+                    $this->load->model("Users_model");
+                    $result= $this->Users_model->saveGuestInvoice();     
+
+
+                    if(!$result){
+                        // If user did not validate, then show them login page again
+                       // $msg = '<font color=red>Invalid username and/or password.</font><br />';
+                        //$this->login($msg);
+                        echo "failed";
+                    }else{
+                        // If user did validate, 
+                        // Send them to members area
+                        //$str='users/viewguest?guest_id='.$result;
+                        echo "pass";
+
+                        //redirect($str);
+                    }
+
+                }else{
+
+                    redirect('users/login');
+                }
+
+    }
+
     public function updateguestinfo($gid=null)
     {
     	if($_POST){
