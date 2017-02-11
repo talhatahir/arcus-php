@@ -60,6 +60,9 @@
           <div class="col-xs-2" style="float:right;">
            <button type="button" id="cheque-button" class="btn btn-danger btn-block">View Cheque Book</button>
           </div>
+          <div class="col-xs-2" style="float:right;">
+           <button type="button" id="invoices-button" class="btn btn-info btn-block">View Invoices</button>
+          </div>
 		 </div>
 
 		 	<br/>
