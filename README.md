@@ -1,4 +1,4 @@
-#Arcus - Hotel Management System written in PHP
+# Arcus - Hotel Management System written in PHP
 
 This repo contains a production version of a Hotel Management System which was made using Code Ignitor (PHP, MySQL, Apache server).
 Front-end is made using BootStrap css and Jquery.
